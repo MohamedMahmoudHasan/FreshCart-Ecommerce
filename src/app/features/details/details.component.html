@@ -1,0 +1,205 @@
+<section id="product-detail" class="py-12 bg-gray-50/30">
+  <div class="container mx-auto px-4">
+    <div class="flex flex-col lg:flex-row gap-12">
+      <div id="product-images" class="lg:w-2/5">
+        <div class="sticky top-8 space-y-4">
+          <div
+            class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden p-6 group relative"
+          >
+            <swiper-container
+              #swiperMain
+              [config]="swiperConfig"
+              initial-slide="0"
+              speed="700"
+              class="w-full"
+            >
+              @for (img of product().images; track $index) {
+                <swiper-slide>
+                  <div class="relative aspect-square cursor-zoom-in">
+                    <img
+                      class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
+                      [src]="img"
+                      [alt]="product().title"
+                    />
+                  </div>
+                </swiper-slide>
+              }
+            </swiper-container>
+
+            <div
+              class="absolute bottom-4 right-4 z-10 bg-white/80 backdrop-blur-sm p-3 rounded-full text-gray-400 shadow-sm"
+            >
+              <i class="fa-solid fa-magnifying-glass-plus"></i>
+            </div>
+          </div>
+
+          <div class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+            @for (img of product().images; track $index) {
+              <button
+                (click)="slideTo($index)"
+                class="w-20 h-20 rounded-2xl border-2 transition-all duration-300 overflow-hidden p-1 shrink-0 bg-white shadow-sm hover:border-primary-500 focus:border-primary-600"
+              >
+                <img [src]="img" class="w-full h-full object-cover rounded-xl" />
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div id="product-info" class="lg:w-3/5">
+        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 lg:p-10">
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-2">
+              <span
+                class="bg-primary-50 text-primary-600 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest"
+              >
+                {{ product().category.name }}
+              </span>
+              <span class="text-gray-300">•</span>
+              <span class="text-sm font-medium text-gray-500 italic">{{
+                product().brand.name
+              }}</span>
+            </div>
+            <span
+              class="inline-flex items-center gap-1.5 text-[11px] font-bold px-3 py-1 rounded-full bg-emerald-50 text-emerald-600"
+            >
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              IN STOCK
+            </span>
+          </div>
+
+          <h1 class="text-3xl lg:text-4xl font-black text-secondary mb-4 leading-tight">
+            {{ product().title }}
+          </h1>
+
+          <div class="flex items-center gap-2 mb-8">
+            <div class="flex text-amber-400 gap-0.5">
+              <i class="fa-solid fa-star"></i>
+            </div>
+            <span class="text-sm font-medium text-gray-400"
+              >({{ product().ratingsAverage }}) Rating</span
+            >
+          </div>
+
+          <div class="flex items-end gap-4 mb-8 p-6 bg-gray-50 rounded-2xl">
+            <div class="flex flex-col">
+              @if (product().priceAfterDiscount) {
+                <span class="text-sm text-gray-400 line-through mb-1"
+                  >{{ product().price }} EGP</span
+                >
+              }
+              <span class="text-4xl font-black text-secondary leading-none"
+                >{{ product().priceAfterDiscount ?? product().price }}
+                <small class="text-lg">EGP</small></span
+              >
+            </div>
+            @if (product().priceAfterDiscount) {
+              <div
+                class="bg-danger text-white text-[11px] font-bold px-3 py-1.5 rounded-lg mb-1 shadow-lg shadow-danger/20"
+              >
+                SAVE
+                {{
+                  (
+                    ((product().price - product().priceAfterDiscount) / product().price) *
+                    100
+                  ).toPrecision(2)
+                }}%
+              </div>
+            }
+          </div>
+
+          <div class="mb-10">
+            <h4 class="text-secondary font-bold mb-3 flex items-center gap-2">
+              <span class="w-1 h-4 bg-primary-600 rounded-full"></span>
+              Product Description
+            </h4>
+            <p class="text-gray-500 leading-relaxed text-sm">
+              {{ product().description }}
+            </p>
+          </div>
+
+          <div class="space-y-6">
+            <div class="flex flex-wrap items-center gap-6">
+              <!-- <div class="flex items-center bg-gray-100 rounded-xl p-1">
+                <button
+                  class="w-10 h-10 flex items-center justify-center text-gray-500 hover:text-primary-600 transition-colors disabled:opacity-30"
+                >
+                  <i class="fa-solid fa-minus"></i>
+                </button>
+                <input
+                  type="number"
+                  value="1"
+                  class="w-12 bg-transparent text-center font-bold text-secondary border-none focus:ring-0"
+                />
+                <button
+                  class="w-10 h-10 flex items-center justify-center text-gray-500 hover:text-primary-600 transition-colors"
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </div> -->
+              <span class="text-xs font-bold text-gray-400"
+                >{{ product().quantity }} items available</span
+              >
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4">
+              <button
+                (click)="addToCart(product()._id)"
+                class="flex-[2] bg-primary-600 text-white py-4 px-8 rounded-2xl font-bold flex items-center justify-center gap-3 shadow-xl shadow-primary-600/20 hover:bg-primary-700 transition-all active:scale-95"
+              >
+                <i class="fa-solid fa-cart-shopping"></i>
+                ADD TO CART
+              </button>
+              <button
+                (click)="addToWish(product()._id)"
+                class="flex-1 border-2 border-gray-100 text-secondary py-4 px-6 rounded-2xl font-bold flex items-center justify-center gap-2 hover:border-danger hover:text-danger transition-all active:scale-95 bg-white"
+              >
+                @if (wishListProd().includes(product()._id)) {
+                  <i class="fa-solid fa-heart text-sm text-danger"></i>
+                } @else {
+                  <i class="fa-regular fa-heart text-sm"></i>
+                }
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12 pt-10 border-t border-gray-100">
+            <div class="flex flex-col items-center text-center gap-3">
+              <div
+                class="w-12 h-12 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center text-xl"
+              >
+                <i class="fa-solid fa-truck-fast"></i>
+              </div>
+              <div>
+                <p class="text-xs font-bold text-secondary uppercase">Free Delivery</p>
+                <p class="text-[10px] text-gray-400">Orders over 500 EGP</p>
+              </div>
+            </div>
+            <div class="flex flex-col items-center text-center gap-3">
+              <div
+                class="w-12 h-12 bg-amber-50 text-amber-500 rounded-2xl flex items-center justify-center text-xl"
+              >
+                <i class="fa-solid fa-rotate-left"></i>
+              </div>
+              <div>
+                <p class="text-xs font-bold text-secondary uppercase">30 Days Return</p>
+                <p class="text-[10px] text-gray-400">Easy exchange</p>
+              </div>
+            </div>
+            <div class="flex flex-col items-center text-center gap-3">
+              <div
+                class="w-12 h-12 bg-emerald-50 text-emerald-500 rounded-2xl flex items-center justify-center text-xl"
+              >
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+              <div>
+                <p class="text-xs font-bold text-secondary uppercase">Secure Payment</p>
+                <p class="text-[10px] text-gray-400">100% Protected</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

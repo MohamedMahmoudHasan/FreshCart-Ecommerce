@@ -1,0 +1,73 @@
+<div class="min-h-screen bg-gray-50/50">
+  <div class="min-h-screen bg-gray-50/50">
+    <header
+      class="relative overflow-hidden bg-gradient-to-br from-primary-700 via-primary-600 to-primary-500 py-16 text-white shadow-lg"
+    >
+      <div class="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl"></div>
+      <div
+        class="absolute -left-20 -bottom-20 h-64 w-64 rounded-full bg-primary-900/20 blur-3xl"
+      ></div>
+
+      <div class="container relative z-10 mx-auto px-6">
+        <nav class="mb-6 flex items-center gap-3 text-sm font-medium text-primary-100/80">
+          <a routerLink="/" class="transition-colors hover:text-white"> Home </a>
+          <i class="fa-solid fa-chevron-right text-[10px] opacity-50"></i>
+          <span class="text-white">Categories</span>
+        </nav>
+
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div class="flex items-center gap-5">
+            <div
+              class="flex h-20 w-20 items-center justify-center rounded-[2rem] bg-white/20 shadow-2xl backdrop-blur-md ring-1 ring-white/30"
+            >
+              <i class="fa-solid fa-layer-group text-4xl"></i>
+            </div>
+            <div>
+              <h1 class="text-4xl font-black tracking-tight sm:text-5xl">Explore Categories</h1>
+              <p class="mt-2 text-lg font-medium text-primary-50/90">
+                Find everything you need organized by type
+              </p>
+            </div>
+          </div>
+
+          <div class="hidden lg:flex items-center gap-4">
+            <div class="px-6 py-3 rounded-2xl bg-black/10 backdrop-blur-sm border border-white/10">
+              <span class="block text-2xl font-black">10+</span>
+              <span class="text-xs uppercase tracking-widest text-primary-100">Departments</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-10">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
+        @for (category of categoriesList(); track category._id) {
+          <a
+            [routerLink]="['/shop']"
+            [queryParams]="{ category: category._id, slug: category.slug }"
+            class="group bg-white rounded-2xl border border-gray-100 p-4 sm:p-6 shadow-sm hover:shadow-xl hover:border-primary-200 transition-all duration-300 hover:-translate-y-1 block"
+          >
+            <div class="aspect-square rounded-xl overflow-hidden bg-gray-50 mb-4">
+              <img
+                [src]="category.image"
+                [alt]="category.name"
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+            </div>
+
+            <h3
+              class="font-bold text-gray-900 text-center group-hover:text-primary-600 transition-colors"
+            >
+              {{ category.name }}
+            </h3>
+
+            <div
+              class="flex justify-center mt-2 opacity-0 group-hover:opacity-100 transition-opacity"
+            ></div>
+          </a>
+        }
+      </div>
+    </div>
+  </div>
+</div>

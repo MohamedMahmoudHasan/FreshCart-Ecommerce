@@ -1,0 +1,105 @@
+<div class="min-h-screen bg-gray-50/50 py-8">
+  <div class="container mx-auto px-4">
+    <div class="bg-white rounded-2xl border border-gray-100 p-6 mb-8 shadow-sm">
+      <div class="flex items-center gap-4">
+        <div class="w-14 h-14 rounded-2xl bg-red-50 flex items-center justify-center">
+          <i class="fa-solid fa-heart text-2xl text-red-500"></i>
+        </div>
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">My Wishlist</h1>
+          <p class="text-gray-500 text-sm">{{ wishlistItems().length }} items saved in your list</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
+      <div
+        class="hidden md:grid grid-cols-12 gap-4 px-6 py-4 bg-gray-50 border-b border-gray-100 text-sm font-medium text-gray-500"
+      >
+        <div class="col-span-6">Product Details</div>
+        <div class="col-span-2 text-center">Price</div>
+        <div class="col-span-2 text-center">Status</div>
+        <div class="col-span-2 text-center">Actions</div>
+      </div>
+
+      <div class="divide-y divide-gray-100">
+        @for (item of wishlistItems(); track item._id) {
+          <div
+            class="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 md:px-6 md:py-5 items-center hover:bg-gray-50/50 transition-colors"
+          >
+            <div class="md:col-span-6 flex items-center gap-4">
+              <div
+                class="w-24 h-24 rounded-xl bg-gray-50 border border-gray-100 overflow-hidden shrink-0 p-2"
+              >
+                <img
+                  [src]="item.imageCover"
+                  [alt]="item.title"
+                  class="w-full h-full object-contain"
+                />
+              </div>
+              <div class="min-w-0">
+                <h3 class="font-semibold text-gray-900 line-clamp-1">{{ item.title }}</h3>
+                <p class="text-sm text-gray-400 mt-1">{{ item.category?.name }}</p>
+              </div>
+            </div>
+
+            <div class="md:col-span-2 flex md:justify-center items-center gap-2">
+              <span class="md:hidden text-sm text-gray-500 font-medium">Price:</span>
+              <span class="font-bold text-primary-600">{{ item.price }} EGP</span>
+            </div>
+
+            <div class="md:col-span-2 flex md:justify-center">
+              <span
+                class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700"
+              >
+                <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> In Stock
+              </span>
+            </div>
+
+            <div class="md:col-span-2 flex items-center gap-2 md:justify-center">
+              <button
+                (click)="addToCart(item._id)"
+                class="flex-1 md:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium bg-primary-600 text-white hover:bg-primary-700 transition-all shadow-sm"
+              >
+                <i class="fa-solid fa-cart-shopping text-xs"></i>
+                <span>Add</span>
+              </button>
+
+              <button
+                (click)="removeItem(item._id)"
+                class="w-10 h-10 rounded-lg border border-gray-200 flex items-center justify-center text-gray-400 hover:text-red-500 hover:border-red-200 hover:bg-red-50 transition-all"
+                title="Remove"
+              >
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+        } @empty {
+          <div class="py-20 text-center">
+            <div
+              class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4"
+            >
+              <i class="fa-solid fa-heart-crack text-3xl text-gray-300"></i>
+            </div>
+            <h2 class="text-xl font-medium text-gray-900">Your wishlist is empty</h2>
+            <p class="text-gray-500 mt-2">Start adding some items you love!</p>
+            <a
+              routerLink="/products"
+              class="mt-6 inline-block text-primary-600 font-medium hover:underline"
+              >Go to Shop</a
+            >
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="mt-8">
+      <a
+        routerLink="/shop"
+        class="text-gray-500 hover:text-primary-600 text-sm font-medium transition-colors flex items-center gap-2"
+      >
+        <i class="fa-solid fa-arrow-left"></i> Continue Shopping
+      </a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,91 @@
+<div
+  class="group relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 overflow-hidden"
+>
+  <div
+    class="relative overflow-hidden bg-gray-50 aspect-square flex items-center justify-center p-6"
+  >
+    @if (product().priceAfterDiscount) {
+      <span
+        class="absolute top-3 left-3 bg-danger text-white text-[10px] font-bold px-2 py-1 rounded-lg z-10 shadow-sm"
+      >
+        -{{
+          (((product().price - product().priceAfterDiscount) / product().price) * 100).toPrecision(
+            2
+          )
+        }}% OFF
+      </span>
+    }
+    <img
+      [src]="product().imageCover"
+      [alt]="product().slug"
+      class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
+    />
+
+    <div
+      class="absolute top-3 right-[-50px] group-hover:right-3 transition-all duration-300 flex flex-col gap-2"
+    >
+      <button
+        (click)="addToWish(product()._id)"
+        class="w-9 h-9 bg-white rounded-xl shadow-md flex items-center justify-center text-gray-400 hover:text-danger hover:bg-red-50 transition-colors"
+      >
+        @if (wishListProd().includes(product()._id)) {
+          <i class="fa-solid fa-heart text-sm text-danger"></i>
+        } @else {
+          <i class="fa-regular fa-heart text-sm"></i>
+        }
+      </button>
+      <button
+        class="w-9 h-9 bg-white rounded-xl shadow-md flex items-center justify-center text-gray-400 hover:text-primary-600 hover:bg-primary-50 transition-colors"
+      >
+        <i class="fa-solid fa-arrows-rotate text-sm"></i>
+      </button>
+      <button
+        [routerLink]="['/details', product()._id, product().slug]"
+        class="w-9 h-9 bg-white rounded-xl shadow-md flex items-center justify-center text-gray-400 hover:text-blue-500 hover:bg-blue-50 transition-colors"
+      >
+        <i class="fa-regular fa-eye text-sm"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="p-5">
+    <div class="flex justify-between items-start mb-2">
+      <span
+        class="text-[11px] font-bold text-primary-600 uppercase tracking-wider bg-primary-50 px-2 py-0.5 rounded-md"
+      >
+        {{ product().category.name }}
+      </span>
+      <div class="flex items-center gap-1">
+        <span class="text-[11px] font-bold text-gray-600"
+          >{{ product().ratingsAverage }} ({{ product().ratingsQuantity }})</span
+        >
+        <i class="fa-solid fa-star text-amber-400 text-[10px]"></i>
+      </div>
+    </div>
+
+    <h3
+      class="text-secondary font-semibold text-sm mb-3 line-clamp-1 hover:text-primary-600 transition-colors cursor-pointer"
+    >
+      {{ product().title }}
+    </h3>
+
+    <div class="flex items-center justify-between mt-2 pt-4 border-t border-gray-50">
+      <div class="flex items-baseline gap-2">
+        <span class="text-base font-black text-secondary"
+          >{{ product().priceAfterDiscount ?? product().price }}
+          <small class="text-[10px]">EGP</small></span
+        >
+        @if (product().priceAfterDiscount) {
+          <span class="text-[11px] text-gray-500 line-through">{{ product().price }} EGP</span>
+        }
+      </div>
+
+      <button
+        (click)="addToCart(product()._id)"
+        class="h-10 w-10 bg-primary-600 text-white rounded-xl shadow-lg shadow-primary-600/20 hover:bg-primary-700 hover:rotate-90 transition-all duration-300 flex items-center justify-center"
+      >
+        <i class="fa-solid fa-plus"></i>
+      </button>
+    </div>
+  </div>
+</div>
