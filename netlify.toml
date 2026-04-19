@@ -1,8 +1,10 @@
+[build]
+  command = "npm run build"
+  publish = "dist/e-commerce/browser"
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
-[build]
-  command = "ng build"
-  publish = "dist/e-commerce/browser"
+[plugins]
