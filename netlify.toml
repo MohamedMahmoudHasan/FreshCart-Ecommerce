@@ -7,8 +7,5 @@
   to = "/index.html"
   status = 200
 
-[functions]
-  node_bundling = "none"
-
 [build.processing]
   skip_node_bundling = true
